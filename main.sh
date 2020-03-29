@@ -41,7 +41,7 @@ fi
 
 case $os in
 	"Linux" ) partitions=`lsblk | grep -e "$dev_name[0-9]" | awk '{print substr($0,3,6)}'` ;;
-	"Darwin" ) partitions=`diskutil list | grep $dev_name | grep -E "[0-9] (KB|MB|GB)" | awk "/$dev_name.+/ {print $5}"`;;
+	"Darwin" ) partitions=`diskutil list | grep $dev_name | grep -E "[0-9] (KB|MB|GB)" | grep -E "$dev_name.+" | awk '{print $5}'`;;
 esac
 
 for i in $partitions;
@@ -49,7 +49,10 @@ do
 	umount /dev/$i
 done
 
-dd if=$1 of=/dev/$dev_name bs=4M status=progress oflag=sync
+case $os in
+	"Linux" ) dd if=$1 of=/dev/$dev_name bs=4M status=progress oflag=sync ;;
+	"Darwin" ) dd if=$1 of=/dev/$dev_name bs=4m count=4096 ;;
+esac
 
 if [ $? -eq 0 ]; then
 	echo "\n--------------------------------------\n"
