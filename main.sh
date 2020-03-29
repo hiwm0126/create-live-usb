@@ -5,13 +5,21 @@ if [ ${#1} -eq 0 ]; then
   exit 1
 fi
 
+os=`uname`
+
 echo "\n==============BLOCK DEVICE INFO=================\n"
-lsblk
+case $os in
+	"Linux" ) lsblk;;
+	"Darwin" ) diskutil list;;
+esac
 echo "\n================================================\n"
 
 echo  "which device do you want to use?\n"
 
-dev_list=`lsblk | grep disk | awk '{print substr($0,0,10)}'`
+case $os in
+	"Linux" ) dev_list=`lsblk | grep disk | awk '{print substr($0,0,10)}'` ;;
+	"Darwin" ) dev_list=`diskutil list | grep external | sed -e 's/(.*)://g' | sed -e 's/\/dev\///g'`;;
+esac
 
 echo "---device name list---\n$dev_list\n----------------------\n"
 
@@ -30,13 +38,21 @@ if [ $chk_flg -ne 1 ]; then
 	exit 1
 fi
 
-for i in `lsblk | grep -e "$dev_name[0-9]" | awk '{print substr($0,3,6)}'`;
+
+case $os in
+	"Linux" ) partitions=`lsblk | grep -e "$dev_name[0-9]" | awk '{print substr($0,3,6)}'` ;;
+	"Darwin" ) partitions=`diskutil list | grep $dev_name | grep -E "[0-9] (KB|MB|GB)" | grep -E "$dev_name.+" | awk '{print $5}'`;;
+esac
+
+for i in $partitions;
 do 
 	umount /dev/$i
-	mkfs.vfat -F 32 /dev/$i
 done
 
-dd if=$1 of=/dev/$dev_name bs=4M status=progress oflag=sync
+case $os in
+	"Linux" ) dd if=$1 of=/dev/$dev_name bs=4M status=progress oflag=sync ;;
+	"Darwin" ) dd if=$1 of=/dev/$dev_name bs=4m count=4096 ;;
+esac
 
 if [ $? -eq 0 ]; then
 	echo "\n--------------------------------------\n"
