@@ -1,20 +1,20 @@
 # create-live-usb
 Create Live usb script.
 
-## 0. Available Environment
+## Available Environment
 `Linux` and `macOS`
 
-## 1. install
+## 1. Install
 
 ```
-git clone https://github.com/hiwm0126/create-live-usb.git ~/.create-live-usb
-sudo ln -snf ~/.create-live-usb/main.sh /usr/local/bin/create-live-usb
+$ git clone https://github.com/hiwm0126/create-live-usb.git ~/.create-live-usb
+$ sudo ln -snf ~/.create-live-usb/main.sh /usr/local/bin/create-live-usb
 ```
 ## 2. How to use
 
-### 2-1. Linux
+### 2-1. Example (Linux)
 ```
-$ sudo create-live-usb [iso image path] <-- (ex: sudo create-live-usb ~/Download/Peppermint-10-20191210-amd64.iso)
+$ sudo create-live-usb ~/Download/********.iso
 
 ==============BLOCK DEVICE INFO=================
 
@@ -37,7 +37,7 @@ sda
 mmcblk0   
 ----------------------
 
-Enter the dvice name : <-- (ex: sda)
+Enter the dvice name : sda
 1560281088 bytes (1.6 GB, 1.5 GiB) copied, 266 s, 5.9 MB/s 
 372+1 records in
 372+1 records out
@@ -49,9 +49,9 @@ Creating Live USB is complete.
 
 ```
 
-### 2-2. macOS
+### 2-2. Example (macOS)
 ```
-$ sudo create-live-usb [iso image path] <-- (ex: sudo create-live-usb ~/Download/Peppermint-10-20191210-amd64.iso)
+$ sudo create-live-usb ~/Download/********.iso
 
 ==============BLOCK DEVICE INFO=================
 
@@ -85,7 +85,7 @@ which device do you want to use?
 disk2 
 ----------------------
 
-Enter the dvice name : <-- (ex: disk2)
+Enter the dvice name : disk2
 460+0 records in
 460+0 records out
 1929379840 bytes transferred in 324.378169 secs (5947934 bytes/sec)
