@@ -1,5 +1,6 @@
 # create-live-usb
 Create Live usb script.
+（I don't take any responsibility for this script）
 
 ## Available Environment
 `Linux` and `macOS`
